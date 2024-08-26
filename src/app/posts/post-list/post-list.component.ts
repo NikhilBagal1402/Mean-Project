@@ -10,28 +10,29 @@ import { MatButton } from '@angular/material/button';
 @Component({
   selector: 'app-post-list',
   standalone: true,
-  imports: [MatExpansionModule, CommonModule,MatButton],
+  imports: [MatExpansionModule, CommonModule, MatButton],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.css',
 })
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
-  private postSub: Subscription;
+  private postsSub: Subscription;
 
   constructor(public postService: PostService) {}
 
   ngOnInit() {
-    this.posts = this.postService.getPost();
-    this.postSub = this.postService
-      .getPostUpdateListener()
+    this.postService.getPosts();
+    this.postsSub = this.postService.getPostUpdateListener()
       .subscribe((posts: Post[]) => {
         this.posts = posts;
       });
   }
 
-  ngOnDestroy(): void {
-    if (this.postSub) {
-      this.postSub.unsubscribe();
-    }
+  onDelete(id){
+    this.postService.deletePost(id);
+  }
+
+  ngOnDestroy() {
+    this.postsSub.unsubscribe();
   }
 }

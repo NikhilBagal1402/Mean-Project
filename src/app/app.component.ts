@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { FormsModule } from '@angular/forms';
+
+import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from "./header/header.component";
 import { PostListComponent } from './posts/post-list/post-list.component';
-import { Post } from './posts/post.modal';
 
 @Component({
   selector: 'app-root',

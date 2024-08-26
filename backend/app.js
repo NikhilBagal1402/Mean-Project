@@ -1,17 +1,60 @@
 const express = require("express");
 const app = express();
+const bodyparser = require('body-parser');
+const mongoose = require('mongoose');
+const Post = require('./models/post')
 
-app.use("/api/posts", (req, res, next) => {
-  const posts = [
-    {
-      id: "dfgdsfg",
-      title: "coming from srver",
-      content: "Dummy post from server",
-    },
-  ];
-  res.json({
-    message: "post fetch successfully",
+mongoose.connect("mongodb+srv://nikhil_bagal14:Nik1402@cluste-1.3xk6z.mongodb.net/mean-project")
+.then(() => {
+  console.log('Connected to Database');
+})
+.catch(() => {
+  console.log('Connection failed');
+});
+
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended:false}))
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST , PATCH, DELETE, OPTIONS"
+  );
+  next();
+});
+
+app.post("/api/posts", (req, res, next) => {
+  const post = new Post({
+    titlr: req.body.title,
+    content: req.body.content
   });
+  post.save();
+  res.status(201).json({
+    message: 'Post added successfully'
+  });
+});
+
+app.get("/api/posts", (req, res, next) => {
+  Post.find().then(documents => {
+    if(documents){
+      res.status(200).json({
+        message: "Posts fetched successfully!",
+        posts: documents
+      });
+    }
+  });
+});
+
+app.delete("/api/posts/:id", (req,res,next) => {
+  Post.deleteOne({_id : req.params.id}).then(result => {
+   console.log(result);
+   res.status(200).json({ message:"Post deleted" });
+  })
 });
 
 module.exports = app;

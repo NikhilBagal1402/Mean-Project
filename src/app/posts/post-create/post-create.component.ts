@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { Post } from '../post.modal';
+
 import { PostService } from '../post.service';
 
 @Component({
@@ -23,12 +23,11 @@ export class PostCreateComponent {
 
   constructor(public postService:PostService){}
 
-  onSavePost(form:NgForm) {
-    if(form.valid){
-      this.postService.addPost(form.value.title,form.value.content);
-      form.reset();
-    } else {
+  onSavePost(form: NgForm) {
+    if (form.invalid) {
       return;
     }
+    this.postService.addPost(form.value.title, form.value.content);
+    form.resetForm();
   }
 }
