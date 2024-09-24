@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
-const Post = require('./models/post')
+const Post = require('./models/post');
+const { title } = require("process");
 
 mongoose.connect("mongodb+srv://nikhil_bagal14:Nik1402@cluste-1.3xk6z.mongodb.net/mean-project")
 .then(() => {
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
 
 app.post("/api/posts", (req, res, next) => {
   const post = new Post({
-    titlr: req.body.title,
+    title: req.body.title,
     content: req.body.content
   });
   post.save();
