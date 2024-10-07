@@ -13,3 +13,7 @@ a {
     color: white
 
 }
+
+ul {
+    display: flex;
+}
